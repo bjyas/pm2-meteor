@@ -90,7 +90,8 @@ module.exports =
   installBundleDeps: (session, pm2mConf, done)->
     serverLocation = path.join getAppLocation(pm2mConf), _settings.bundleName, "/programs/server"
     cmd = cmdString pm2mConf, "cd #{serverLocation} && node --version && npm i ."
-    session.execute cmd, {}, (err, code, logs)->
+    script = path.resolve __dirname, '../scripts/linux/deploy.sh'
+    session.executeScript script, {vars: {serverLocation: serverLocation}}, (err, code, logs)->
       if err
         done err
       else
